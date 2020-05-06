@@ -1,0 +1,39 @@
+server:
+  port: 8081
+
+application:
+  session:
+    maxInactiveTimeSeconds: 600
+  authorization-server:
+    url: ${AUTHORIZATION_SERVER_URL}
+    realm: mwlosek-realm
+    token-endpoint: /auth/realms/${application.authorization-server.realm}/protocol/openid-connect/token
+    authorization-endpoint: /auth/realms/${application.authorization-server.realm}/protocol/openid-connect/auth
+    user-info-endpoint: /auth/realms/${application.authorization-server.realm}/protocol/openid-connect/userinfo
+    client-id: test-client
+    client-secret: 8dd31028-78f8-42c3-b8d0-8ae39cab6cc7
+  resource-server:
+    url: ${RESOURCE_SERVER_URL}
+
+spring:
+  data:
+    mongodb:
+      host: ${MONGODB_SERVER_IP}
+      auto-index-creation: true
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ${application.authorization-server.client-id}
+            client-secret: ${application.authorization-server.client-secret}
+            authorization-grant-type: authorization_code
+            redirectUri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            scope:
+              - test-scope
+        provider:
+          keycloak:
+            authorization-uri: ${application.authorization-server.url}${application.authorization-server.authorization-endpoint}
+            token-uri: ${application.authorization-server.url}${application.authorization-server.token-endpoint}
+            user-info-uri: ${application.authorization-server.url}${application.authorization-server.user-info-endpoint}
+            user-name-attribute: preferred_username

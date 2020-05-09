@@ -24,7 +24,8 @@ Client token refresh logic:
 
 ## Authorization Server (Keycloak)
 * Used Basic configuration with one realm, one client, one user
-* Disabled https requirement for test realm so client and resource server can access it (in production environment, it would need to be enabled and it should use valid certificate)
+* Disabled https requirement for test realm so client and resource server can access it  
+(in production environment, it would need to be enabled and it should use valid certificate)
 
 ## Docker-compose
 * Keycloak test realm is imported

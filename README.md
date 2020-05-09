@@ -36,7 +36,7 @@ Client token refresh logic:
 ### Before you start
 * Make sure you have `Docker` and `docker-compose` installed.
 
-[Docker CE INSTALLATION](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+[Docker CE INSTALLATION](https://docs.docker.com/install/linux/docker-ce/ubuntu/)  
 [Docker Compose INSTALLATION](https://docs.docker.com/compose/install/#prerequisites)
 
 ### Start the environment

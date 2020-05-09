@@ -9,7 +9,6 @@
 		<version>2.2.3.RELEASE</version>
 	</parent>
 
-	<groupId>com.github.mateuszwlosek</groupId>
 	<artifactId>oauth2-resource-server</artifactId>
 	<version>1.0.0</version>
 

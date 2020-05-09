@@ -32,7 +32,6 @@ public class RefreshTokenService {
     private final AuthorizationServerProperties authorizationServerProperties;
 
     public String getRefreshedAccessToken(final OAuth2AuthenticationToken token) {
-        log.info("Refreshing token");
         final OAuth2AuthorizedClient client = authorizedClientService.
                 loadAuthorizedClient(token.getAuthorizedClientRegistrationId(), token.getName());
 
@@ -58,7 +57,6 @@ public class RefreshTokenService {
                     .orElseThrow(() -> new IllegalArgumentException("Refresh token has not been fetched from authorization server"));
         }
 
-        log.info("Refr");
         final RefreshTokenResponse refreshTokenResponse = refreshToken(refreshToken, sessionId);
         return refreshTokenResponse.getAccessToken();
     }

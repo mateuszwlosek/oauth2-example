@@ -18,3 +18,7 @@ jobs:
           name: Build application Docker image
           command: |
             docker-compose build
+      - run:
+          name: Log in to docker hub
+          command: |
+            - docker login --username=frast --password=${docker_hub_token}

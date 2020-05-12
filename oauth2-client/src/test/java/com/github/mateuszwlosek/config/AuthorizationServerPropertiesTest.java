@@ -8,6 +8,6 @@ public class AuthorizationServerPropertiesTest {
 
     @Test
     public void test() {
-        Assert.assertFalse(false);
+        Assert.assertTrue(false);
     }
 }

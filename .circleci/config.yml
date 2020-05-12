@@ -21,4 +21,4 @@ jobs:
       - run:
           name: Log in to docker hub
           command: |
-            - docker login --username=frast --password=${DOCKER_HUB_TOKEN}
+            docker login --username=frast --password=${DOCKER_HUB_TOKEN}

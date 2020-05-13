@@ -25,6 +25,10 @@ jobs:
       - run:
           name: Tag docker images
           command: |
+            docker images
+      - run:
+          name: Tag docker images
+          command: |
             docker tag oauth2-example_oauth2-resource-server:latest frast/circleci-test
       - run:
           name: Push docker images

@@ -22,3 +22,11 @@ jobs:
           name: Log in to docker hub
           command: |
             docker login --username=frast --password=${DOCKER_HUB_TOKEN}
+      - run:
+          name: Tag docker images
+          command: |
+            docker tag oauth2-example_oauth2-resource-server:latest frast/circleci-test
+      - run:
+          name: Push docker images
+          command: |
+            docker push frast/circleci-test

@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: /app
+    working_directory: /oauth2-example
     docker:
       - image: docker:17.05.0-ce-git
     steps:
@@ -23,7 +23,7 @@ jobs:
           command: |
             docker login --username=frast --password=${DOCKER_HUB_TOKEN}
       - run:
-          name: Tag docker images
+          name: Show docker images
           command: |
             docker images
       - run:

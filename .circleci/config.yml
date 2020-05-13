@@ -10,8 +10,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --no-cache \
-              py-pip=9.0.0-r1
             pip install \
               docker-compose==1.12.0
       - run:
@@ -21,7 +19,7 @@ jobs:
       - run:
           name: Log in to docker hub
           command: |
-            docker login --username=frast --password=${DOCKER_HUB_TOKEN}
+            docker login --username=${DOCKER_HUB_USERNAME} --password=${DOCKER_HUB_TOKEN}
       - run:
           name: Show docker images
           command: |
@@ -29,10 +27,10 @@ jobs:
       - run:
           name: Tag docker images
           command: |
-            docker tag oauth2example_oauth2-resource-server:latest frast/circleci-test
-            docker tag oauth2example_oauth2-client:latest frast/circleci-test2
+            docker tag oauth2example_oauth2-resource-server:latest frast/oauth2-example-resource-server
+            docker tag oauth2example_oauth2-client:latest frast/oauth2-example-client
       - run:
           name: Push docker images
           command: |
-            docker push frast/circleci-test
-            docker push frast/circleci-test2
+            docker push frast/oauth2-example-resource-server
+            docker push frast/oauth2-example-client

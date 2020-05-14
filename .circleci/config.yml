@@ -23,10 +23,6 @@ jobs:
           command: |
             docker login --username=${DOCKER_HUB_USERNAME} --password=${DOCKER_HUB_TOKEN}
       - run:
-          name: Show docker images
-          command: |
-            docker images
-      - run:
           name: Tag docker images
           command: |
             docker tag oauth2example_oauth2-resource-server:latest frast/oauth2-example-resource-server

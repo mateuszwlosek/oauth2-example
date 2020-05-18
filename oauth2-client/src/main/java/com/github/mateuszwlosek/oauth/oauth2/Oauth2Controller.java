@@ -16,14 +16,14 @@ import java.util.Optional;
 @RequestMapping(value = "oauth2")
 public class Oauth2Controller {
 
-    private final Oauth2RedirectionService redirectionHandler;
-    private final ResourceServerHandler resourceServerHandler;
+	private final Oauth2RedirectionService redirectionHandler;
+	private final ResourceServerHandler resourceServerHandler;
 
-    @GetMapping("/test")
-    public String oauth2Endpoint(final OAuth2AuthenticationToken token) {
-        final Optional<String> authorizationHeader = redirectionHandler.getAuthorizationHeader(token);
-        authorizationHeader.ifPresent(header -> log.info("Authorization header: {}", header));
+	@GetMapping("/test")
+	public String oauth2Endpoint(final OAuth2AuthenticationToken token) {
+		final Optional<String> authorizationHeader = redirectionHandler.getAuthorizationHeader(token);
+		authorizationHeader.ifPresent(header -> log.info("Authorization header: {}", header));
 
-        return resourceServerHandler.requestResourceServer(token);
-    }
+		return resourceServerHandler.requestResourceServer(token);
+	}
 }

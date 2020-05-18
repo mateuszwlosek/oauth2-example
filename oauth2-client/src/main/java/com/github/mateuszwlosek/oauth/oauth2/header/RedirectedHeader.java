@@ -14,13 +14,13 @@ import java.util.Date;
 @Document
 public class RedirectedHeader {
 
-    @Id
-    private String id;
+	@Id
+	private String id;
 
-    private final String header;
-    private final String sessionId;
+	private final String header;
+	private final String sessionId;
 
-    @CreatedDate
-    @Indexed(expireAfter = "3d")
-    private Date createdDate;
+	@CreatedDate
+	@Indexed(expireAfter = "3d")
+	private Date createdDate;
 }

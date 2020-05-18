@@ -15,15 +15,15 @@ import java.util.Date;
 @Document
 public class RefreshedTokenData {
 
-    @Id
-    private String id;
+	@Id
+	private String id;
 
-    private final String accessToken;
-    private final String refreshToken;
-    private final Instant expirationTime;
-    private final String sessionId;
+	private final String accessToken;
+	private final String refreshToken;
+	private final Instant expirationTime;
+	private final String sessionId;
 
-    @CreatedDate
-    @Indexed(expireAfter = "3d")
-    private Date createdDate;
+	@CreatedDate
+	@Indexed(expireAfter = "3d")
+	private Date createdDate;
 }

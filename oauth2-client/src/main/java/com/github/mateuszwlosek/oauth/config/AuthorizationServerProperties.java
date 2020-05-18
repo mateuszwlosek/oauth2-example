@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "application.authorization-server")
 public class AuthorizationServerProperties {
 
-    private String clientId;
-    private String clientSecret;
+	private String clientId;
+	private String clientSecret;
 }

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = Controller.PATH)
 public class Controller {
 
-    public static final String PATH = "normal";
+	public static final String PATH = "normal";
 
-    @GetMapping("/test")
-    public String normalEndpoint() {
-        return "Hello World!";
-    }
+	@GetMapping("/test")
+	public String normalEndpoint() {
+		return "Hello World!";
+	}
 }

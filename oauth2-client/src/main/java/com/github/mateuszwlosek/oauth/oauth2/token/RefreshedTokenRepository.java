@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface RefreshedTokenRepository extends MongoRepository<RefreshedTokenData, String> {
 
-    Optional<RefreshedTokenData> findFirstBySessionIdOrderByCreatedDate(String sessionId);
+	Optional<RefreshedTokenData> findFirstBySessionIdOrderByCreatedDate(String sessionId);
 }

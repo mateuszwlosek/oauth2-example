@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 @FeignClient(name = "resourceServer", url = "${application.resource-server.url}")
 public interface ResourceServer {
 
-    @GetMapping("/resources/test")
-    String request(@RequestHeader("Authorization") String token);
+	@GetMapping("/resources/test")
+	String request(@RequestHeader("Authorization") String token);
 }

@@ -24,74 +24,74 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RefreshTokenService {
 
-    private static final int REFRESH_TOKEN_EXPIRATION_BUFFER_SECONDS = 15;
+	private static final int REFRESH_TOKEN_EXPIRATION_BUFFER_SECONDS = 15;
 
-    private final AuthorizationServer authorizationServer;
-    private final RefreshedTokenRepository refreshedTokenRepository;
-    private final OAuth2AuthorizedClientService authorizedClientService;
-    private final AuthorizationServerProperties authorizationServerProperties;
+	private final AuthorizationServer authorizationServer;
+	private final RefreshedTokenRepository refreshedTokenRepository;
+	private final OAuth2AuthorizedClientService authorizedClientService;
+	private final AuthorizationServerProperties authorizationServerProperties;
 
-    public String getRefreshedAccessToken(final OAuth2AuthenticationToken token) {
-        final OAuth2AuthorizedClient client = authorizedClientService.
-                loadAuthorizedClient(token.getAuthorizedClientRegistrationId(), token.getName());
+	public String getRefreshedAccessToken(final OAuth2AuthenticationToken token) {
+		final OAuth2AuthorizedClient client = authorizedClientService.
+				loadAuthorizedClient(token.getAuthorizedClientRegistrationId(), token.getName());
 
-        final OAuth2RefreshToken oAuth2refreshToken = client.getRefreshToken();
+		final OAuth2RefreshToken oAuth2refreshToken = client.getRefreshToken();
 
-        final WebAuthenticationDetails details = (WebAuthenticationDetails) token.getDetails();
-        final String sessionId = details.getSessionId();
+		final WebAuthenticationDetails details = (WebAuthenticationDetails) token.getDetails();
+		final String sessionId = details.getSessionId();
 
-        final String refreshToken;
+		final String refreshToken;
 
-        final Optional<RefreshedTokenData> refreshedTokenData = refreshedTokenRepository.findFirstBySessionIdOrderByCreatedDate(sessionId);
-        if (refreshedTokenData.isPresent()) {
+		final Optional<RefreshedTokenData> refreshedTokenData = refreshedTokenRepository.findFirstBySessionIdOrderByCreatedDate(sessionId);
+		if (refreshedTokenData.isPresent()) {
 
-            if (hasRefreshTokenNotExpired(refreshedTokenData.get())) {
-                return refreshedTokenData.get().getAccessToken();
-            } else {
-                refreshToken = refreshedTokenData.get().getRefreshToken();
-            }
+			if (hasRefreshTokenNotExpired(refreshedTokenData.get())) {
+				return refreshedTokenData.get().getAccessToken();
+			} else {
+				refreshToken = refreshedTokenData.get().getRefreshToken();
+			}
 
-        } else {
-            refreshToken = Optional.ofNullable(oAuth2refreshToken)
-                    .map(AbstractOAuth2Token::getTokenValue)
-                    .orElseThrow(() -> new IllegalArgumentException("Refresh token has not been fetched from authorization server"));
-        }
+		} else {
+			refreshToken = Optional.ofNullable(oAuth2refreshToken)
+					.map(AbstractOAuth2Token::getTokenValue)
+					.orElseThrow(() -> new IllegalArgumentException("Refresh token has not been fetched from authorization server"));
+		}
 
-        final RefreshTokenResponse refreshTokenResponse = refreshToken(refreshToken, sessionId);
-        return refreshTokenResponse.getAccessToken();
-    }
+		final RefreshTokenResponse refreshTokenResponse = refreshToken(refreshToken, sessionId);
+		return refreshTokenResponse.getAccessToken();
+	}
 
-    private RefreshTokenResponse refreshToken(final String refreshToken, final String sessionId) {
-        final Map<String, String> params = buildRefreshTokenParams(refreshToken);
-        final RefreshTokenResponse refreshTokenResponse = authorizationServer.refreshToken(params);
-        storeRefreshedTokenData(refreshTokenResponse, sessionId);
-        return refreshTokenResponse;
-    }
+	private RefreshTokenResponse refreshToken(final String refreshToken, final String sessionId) {
+		final Map<String, String> params = buildRefreshTokenParams(refreshToken);
+		final RefreshTokenResponse refreshTokenResponse = authorizationServer.refreshToken(params);
+		storeRefreshedTokenData(refreshTokenResponse, sessionId);
+		return refreshTokenResponse;
+	}
 
-    private void storeRefreshedTokenData(final RefreshTokenResponse refreshTokenResponse, final String sessionId) {
-        final Instant expirationTime = Instant.now().plus(Long.parseLong(refreshTokenResponse.getExpiresIn()), ChronoUnit.SECONDS);
+	private void storeRefreshedTokenData(final RefreshTokenResponse refreshTokenResponse, final String sessionId) {
+		final Instant expirationTime = Instant.now().plus(Long.parseLong(refreshTokenResponse.getExpiresIn()), ChronoUnit.SECONDS);
 
-        final RefreshedTokenData refreshedTokenData = RefreshedTokenData.builder()
-                .accessToken(refreshTokenResponse.getAccessToken())
-                .refreshToken(refreshTokenResponse.getRefreshToken())
-                .expirationTime(expirationTime)
-                .sessionId(sessionId).build();
+		final RefreshedTokenData refreshedTokenData = RefreshedTokenData.builder()
+				.accessToken(refreshTokenResponse.getAccessToken())
+				.refreshToken(refreshTokenResponse.getRefreshToken())
+				.expirationTime(expirationTime)
+				.sessionId(sessionId).build();
 
-        refreshedTokenRepository.insert(refreshedTokenData);
-    }
+		refreshedTokenRepository.insert(refreshedTokenData);
+	}
 
-    private Map<String, String> buildRefreshTokenParams(final String refreshToken) {
-        final Map<String, String > params = new HashMap<>();
-        params.put("client_id", authorizationServerProperties.getClientId());
-        params.put("grant_type", "refresh_token");
-        params.put("refresh_token", refreshToken);
-        params.put("client_secret", authorizationServerProperties.getClientSecret());
+	private Map<String, String> buildRefreshTokenParams(final String refreshToken) {
+		final Map<String, String> params = new HashMap<>();
+		params.put("client_id", authorizationServerProperties.getClientId());
+		params.put("grant_type", "refresh_token");
+		params.put("refresh_token", refreshToken);
+		params.put("client_secret", authorizationServerProperties.getClientSecret());
 
-        return params;
-    }
+		return params;
+	}
 
-    private boolean hasRefreshTokenNotExpired(final RefreshedTokenData refreshedTokenData) {
-        return Instant.now().isBefore(refreshedTokenData.getExpirationTime().minus(REFRESH_TOKEN_EXPIRATION_BUFFER_SECONDS, ChronoUnit.SECONDS));
+	private boolean hasRefreshTokenNotExpired(final RefreshedTokenData refreshedTokenData) {
+		return Instant.now().isBefore(refreshedTokenData.getExpirationTime().minus(REFRESH_TOKEN_EXPIRATION_BUFFER_SECONDS, ChronoUnit.SECONDS));
 
-    }
+	}
 }

@@ -19,45 +19,45 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthorizationHeaderStoreOath2RedirectFilter extends GenericFilterBean {
 
-    private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+	private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
 
-    private final RedirectedHeaderRepository repository;
+	private final RedirectedHeaderRepository repository;
 
-    @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-            throws IOException, ServletException {
+	@Override
+	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+			throws IOException, ServletException {
 
-        if (isSessionPresent()) {
-            storeSessionHeader(request);
-        }
+		if (isSessionPresent()) {
+			storeSessionHeader(request);
+		}
 
-        chain.doFilter(request, response);
-    }
+		chain.doFilter(request, response);
+	}
 
-    private boolean isSessionPresent() {
-        return Objects.nonNull(RequestContextHolder.getRequestAttributes());
-    }
+	private boolean isSessionPresent() {
+		return Objects.nonNull(RequestContextHolder.getRequestAttributes());
+	}
 
-    private void storeSessionHeader(final ServletRequest request) {
-        final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
-        final Optional<String> authorizationHeaderOptional = extractAuthorizationHeader(request);
+	private void storeSessionHeader(final ServletRequest request) {
+		final String sessionId = RequestContextHolder.currentRequestAttributes().getSessionId();
+		final Optional<String> authorizationHeaderOptional = extractAuthorizationHeader(request);
 
-        authorizationHeaderOptional
-                .map(s -> RedirectedHeader.builder()
-                        .sessionId(sessionId)
-                        .header(authorizationHeaderOptional.get())
-                        .build())
-                .ifPresent(repository::save);
-    }
+		authorizationHeaderOptional
+				.map(s -> RedirectedHeader.builder()
+						.sessionId(sessionId)
+						.header(authorizationHeaderOptional.get())
+						.build())
+				.ifPresent(repository::save);
+	}
 
-    private Optional<String> extractAuthorizationHeader(final ServletRequest request) {
-        final HttpServletRequest httpRequest = (HttpServletRequest) request;
+	private Optional<String> extractAuthorizationHeader(final ServletRequest request) {
+		final HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        return Collections
-                .list(httpRequest.getHeaderNames())
-                .stream()
-                .filter(header -> header.equalsIgnoreCase(AUTHORIZATION_HEADER_NAME))
-                .map(httpRequest::getHeader)
-                .findFirst();
-    }
+		return Collections
+				.list(httpRequest.getHeaderNames())
+				.stream()
+				.filter(header -> header.equalsIgnoreCase(AUTHORIZATION_HEADER_NAME))
+				.map(httpRequest::getHeader)
+				.findFirst();
+	}
 }

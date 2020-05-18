@@ -6,8 +6,8 @@ import org.junit.Test;
 
 public class AuthorizationServerPropertiesTest {
 
-    @Test
-    public void test() {
-        Assert.assertTrue(true);
-    }
+	@Test
+	public void test() {
+		Assert.assertTrue(true);
+	}
 }

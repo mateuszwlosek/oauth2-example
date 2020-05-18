@@ -9,5 +9,5 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "application.session")
 public class SessionProperties {
 
-    private int maxInactiveTimeSeconds;
+	private int maxInactiveTimeSeconds;
 }

@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = Controller.PATH)
 public class Controller {
 
-    public static final String PATH = "resources";
+	public static final String PATH = "resources";
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @GetMapping("/test")
-    public String test() {
-        final User currentUser = userService.getCurrentUser();
-        return "Hello World from Resource server for user: " + currentUser.getUsername();
-    }
+	@GetMapping("/test")
+	public String test() {
+		final User currentUser = userService.getCurrentUser();
+		return "Hello World from Resource server for user: " + currentUser.getUsername();
+	}
 }

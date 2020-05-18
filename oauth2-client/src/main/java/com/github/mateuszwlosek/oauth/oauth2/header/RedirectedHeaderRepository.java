@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface RedirectedHeaderRepository extends MongoRepository<RedirectedHeader, String> {
 
-    Optional<RedirectedHeader> findFirstBySessionIdOrderByCreatedDateDesc(String sessionId);
+	Optional<RedirectedHeader> findFirstBySessionIdOrderByCreatedDateDesc(String sessionId);
 }

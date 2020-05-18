@@ -8,12 +8,12 @@ import lombok.ToString;
 @ToString
 public class RefreshTokenResponse {
 
-    @JsonProperty("access_token")
-    private final String accessToken;
+	@JsonProperty("access_token")
+	private final String accessToken;
 
-    @JsonProperty("refresh_token")
-    private final String refreshToken;
+	@JsonProperty("refresh_token")
+	private final String refreshToken;
 
-    @JsonProperty("expires_in")
-    private final String expiresIn;
+	@JsonProperty("expires_in")
+	private final String expiresIn;
 }

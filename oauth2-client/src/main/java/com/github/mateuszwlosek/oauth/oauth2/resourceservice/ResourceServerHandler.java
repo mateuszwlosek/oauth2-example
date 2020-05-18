@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ResourceServerHandler {
 
-    private final Oauth2RedirectionService redirectionHandler;
-    private final ResourceServer resourceServer;
+	private final Oauth2RedirectionService redirectionHandler;
+	private final ResourceServer resourceServer;
 
-    public String requestResourceServer(final OAuth2AuthenticationToken token) {
-        final String bearerToken = redirectionHandler.getBearerAccessToken(token);
-        return resourceServer.request(bearerToken);
-    }
+	public String requestResourceServer(final OAuth2AuthenticationToken token) {
+		final String bearerToken = redirectionHandler.getBearerAccessToken(token);
+		return resourceServer.request(bearerToken);
+	}
 }

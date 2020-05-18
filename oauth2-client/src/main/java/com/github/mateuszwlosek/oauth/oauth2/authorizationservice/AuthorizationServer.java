@@ -18,16 +18,16 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 @FeignClient(name = "authorizationServer", url = "${application.authorization-server.url}", configuration = AuthorizationServer.Configuration.class)
 public interface AuthorizationServer {
 
-    @PostMapping(value = "${application.authorization-server.token-endpoint}", consumes = APPLICATION_FORM_URLENCODED_VALUE)
-    RefreshTokenResponse refreshToken(@RequestBody Map<String, ?> params);
+	@PostMapping(value = "${application.authorization-server.token-endpoint}", consumes = APPLICATION_FORM_URLENCODED_VALUE)
+	RefreshTokenResponse refreshToken(@RequestBody Map<String, ?> params);
 
-    /**
-     * Required to make Feign use x-www-form-urlencoded
-     */
-    class Configuration {
-        @Bean
-        private Encoder feignFormEncoder(final ObjectFactory<HttpMessageConverters> converters) {
-            return new SpringFormEncoder(new SpringEncoder(converters));
-        }
-    }
+	/**
+	 * Required to make Feign use x-www-form-urlencoded
+	 */
+	class Configuration {
+		@Bean
+		private Encoder feignFormEncoder(final ObjectFactory<HttpMessageConverters> converters) {
+			return new SpringFormEncoder(new SpringEncoder(converters));
+		}
+	}
 }

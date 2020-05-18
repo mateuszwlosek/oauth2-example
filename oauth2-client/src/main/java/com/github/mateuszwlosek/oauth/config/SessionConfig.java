@@ -10,15 +10,15 @@ import javax.servlet.http.HttpSessionListener;
 @RequiredArgsConstructor
 public class SessionConfig implements HttpSessionListener {
 
-    private final SessionProperties properties;
+	private final SessionProperties properties;
 
-    @Override
-    public void sessionCreated(final HttpSessionEvent event) {
-        event.getSession().setMaxInactiveInterval(properties.getMaxInactiveTimeSeconds());
-    }
+	@Override
+	public void sessionCreated(final HttpSessionEvent event) {
+		event.getSession().setMaxInactiveInterval(properties.getMaxInactiveTimeSeconds());
+	}
 
-    @Override
-    public void sessionDestroyed(final HttpSessionEvent event) {
+	@Override
+	public void sessionDestroyed(final HttpSessionEvent event) {
 
-    }
+	}
 }

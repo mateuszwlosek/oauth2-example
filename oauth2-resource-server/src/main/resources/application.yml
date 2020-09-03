@@ -1,0 +1,14 @@
+server:
+  port: 8082
+
+application:
+  authorization:
+    url: ${AUTHORIZATION_SERVER_URL}
+    realm: mwlosek-realm
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${application.authorization.url}/auth/realms/${application.authorization.realm}

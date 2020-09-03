@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:12.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    networks:
+      default_network:
+        ipv4_address: 172.1.1.1
+  keycloak:
+    image: jboss/keycloak:10.0.0
+    volumes:
+      - ./realms/mwlosek-realm.json:/opt/jboss/keycloak/imports/mwlosek-realm.json
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: 172.1.1.1
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/mwlosek-realm.json
+    ports:
+      - 8080:8080
+      - 8443:8443
+    depends_on:
+      - postgres
+    networks:
+      default_network:
+        ipv4_address: 172.1.1.2
+  mongodb:
+    image: mongo:4.2.6
+    ports:
+      - "27017:27017"
+    networks:
+      default_network:
+        ipv4_address: 172.1.1.3
+  oauth2-client:
+    build: ./oauth2-client
+    ports:
+      - "8081:8081"
+    environment:
+      - AUTHORIZATION_SERVER_URL=http://172.1.1.2:8080
+      - RESOURCE_SERVER_URL=http://172.1.1.5:8082
+      - MONGODB_SERVER_IP=172.1.1.3
+    networks:
+      default_network:
+        ipv4_address: 172.1.1.4
+  oauth2-resource-server:
+    build: ./oauth2-resource-server
+    ports:
+      - "8082:8082"
+    environment:
+      - AUTHORIZATION_SERVER_URL=http://172.1.1.2:8080
+    restart: unless-stopped
+    networks:
+      default_network:
+        ipv4_address: 172.1.1.5
+    depends_on:
+      - keycloak
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.1.0.0/16
